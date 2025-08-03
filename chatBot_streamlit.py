@@ -5,7 +5,6 @@ from PIL import Image
 # --- Streamlit page configuration: অবশ্যই প্রথমেই থাকতে হবে ---
 st.set_page_config(
     page_title="Emotion-Aware Chatbot",
-    page_icon="🤖",
     layout="centered"
 )
 
@@ -42,14 +41,14 @@ st.markdown("""
 It uses a pre-trained transformer model to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral**.
 
 Based on the detected emotion, it responds empathetically to enhance user interaction. This chatbot has applications in:
-- 💬 Mental health support  
-- 🛎️ Emotion-aware customer service  
-- 🤖 Human-computer interaction systems  
+-  Mental health support  
+- Emotion-aware customer service  
+-  Human-computer interaction systems  
 
 **Key Features:**
-- ✅ Real-time emotion detection
-- ✅ Emotion-based chatbot responses
-- ✅ Simple and interactive Streamlit UI
+- Real-time emotion detection
+- Emotion-based chatbot responses
+- Simple and interactive Streamlit UI
 """)
 
 # --- Display Creator Image ---
@@ -69,8 +68,8 @@ st.markdown("""
 - GitHub: [Junayed-Bin-Karim](https://github.com/Junayed-Bin-Karim)  
 - LinkedIn: [Junayed Bin Karim](https://www.linkedin.com/in/junayed-bin-karim-47b755270/)  
 
-💡 Passionate about AI, Machine Learning, and Software Development.  
-🚀 Building innovative projects to solve real-world problems.
+ Passionate about AI, Machine Learning, and Software Development.  
+ Building innovative projects to solve real-world problems.
 """)
 
 st.markdown("---")
