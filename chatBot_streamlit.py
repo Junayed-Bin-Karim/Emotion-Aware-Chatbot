@@ -32,24 +32,36 @@ def detect_emotion(text):
         return "neutral", {}
 
 
-
 import matplotlib.pyplot as plt
 
 def show_emotion_chart(emotions_dict):
-    st.subheader("Emotion Scores (Pie Chart)")
+    st.subheader("📊 Emotion Scores (3D-like Pie Chart)")
+
     labels = list(emotions_dict.keys())
     scores = [score * 100 for score in emotions_dict.values()]
 
-    fig, ax = plt.subplots()
-    ax.pie(
+    explode = [0.05] * len(scores)  # সব সেগমেন্ট একটু আলাদা থাকবে
+
+    fig, ax = plt.subplots(figsize=(6,6), subplot_kw=dict(aspect="equal"))
+
+    wedges, texts, autotexts = ax.pie(
         scores,
+        explode=explode,
         labels=labels,
         autopct='%1.1f%%',
+        shadow=True,              # ছায়া দেবে, 3D ইফেক্টের মতো দেখায়
         startangle=140,
-        colors=plt.cm.Pastel1.colors
+        colors=plt.cm.Pastel1.colors,
+        wedgeprops=dict(width=0.4, edgecolor='w')  # ডোনাট স্টাইলের পাই চার্ট
     )
-    ax.axis('equal')  # Equal aspect ratio ensures pie is circular.
+
+    # Text style adjust
+    plt.setp(autotexts, size=12, weight="bold", color="white")
+    plt.setp(texts, size=12)
+
+    ax.set_title("Emotion Confidence Scores", fontsize=14, weight='bold')
     st.pyplot(fig)
+
 
 
 # --- Title and Description ---
