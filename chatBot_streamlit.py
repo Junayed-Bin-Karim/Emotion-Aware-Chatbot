@@ -1,9 +1,14 @@
 import streamlit as st
 from transformers import pipeline
 from PIL import Image
+import matplotlib.pyplot as plt
+import datetime
 
-# --- Streamlit Page Configuration ---
-st.set_page_config(page_title="Emotion-Aware Chatbot", layout="centered")
+# --- Streamlit page configuration ---
+st.set_page_config(
+    page_title="Emotion-Aware Chatbot",
+    layout="centered"
+)
 
 # --- Load Emotion Detection Model ---
 @st.cache_resource
@@ -16,75 +21,51 @@ def load_model():
 
 emotion_pipeline = load_model()
 
-# --- Detect Emotion Function ---
+# --- Detect Emotion ---
 def detect_emotion(text):
     try:
         results = emotion_pipeline(text)
         emotions = {res['label']: res['score'] for res in results[0]}
         primary_emotion = max(emotions, key=emotions.get)
-        return primary_emotion, emotions[primary_emotion]
+        return primary_emotion, emotions
     except Exception:
-        return "neutral", 0.0
+        return "neutral", {}
 
-# --- Title & Intro ---
-st.title("🤖 Emotion-Aware Chatbot")
+# --- Show Emotion Chart ---
+def show_emotion_chart(emotions_dict):
+    st.subheader("📊 Emotion Scores")
+    labels = list(emotions_dict.keys())
+    scores = [round(score * 100, 2) for score in emotions_dict.values()]
+
+    fig, ax = plt.subplots()
+    ax.bar(labels, scores, color='skyblue')
+    ax.set_ylabel("Confidence (%)")
+    ax.set_ylim([0, 100])
+    st.pyplot(fig)
+
+# --- Title and Description ---
+st.title("🧠 Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
 # --- Project Description ---
 st.markdown("""
-### 📄 1. Project Name & Description
-**Emotion-Aware Chatbot** is an AI-powered chatbot that can understand human emotions from text using Natural Language Processing (NLP).  
-It can detect **joy, anger, sadness, fear, surprise**, and **neutral** emotions in real-time and reply accordingly to create an empathetic interaction.
+### 📄 Project Description
 
----
+**Emotion-Aware Chatbot** is an intelligent conversational agent that can detect human emotions from text in real-time.  
+It uses a pre-trained transformer model to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral**.
 
-### 🎯 2. Objective
-- Enhance human-computer interaction
-- Support mental well-being through emotion-aware responses
-- Demonstrate how NLP and AI can be used in real-world applications
+Based on the detected emotion, it responds empathetically to enhance user interaction. This chatbot has applications in:
+- Mental health support  
+- Emotion-aware customer service  
+- Human-computer interaction systems  
 
----
-
-### 🛠️ 3. Technologies Used
-- **Python 3**
-- **Streamlit** – for building the interactive web interface
-- **Transformers (HuggingFace)** – pre-trained emotion detection model
-- **Pillow** – for image rendering
-
----
-
-### ⚙️ 4. How It Works
-1. User types a message.
-2. The pre-trained transformer model analyzes the text.
-3. The chatbot detects the most likely emotion with a confidence score.
-4. It replies based on the detected emotion.
-
----
-
-### 🚀 5. Future Improvements
-- Add multilingual emotion detection (e.g., বাংলা)
-- Store chat history and emotions over time
-- Integrate with voice recognition
-- Improve emotion response customization
-
----
-
-### ⚠️ 6. Challenges Faced
-- Emotion models mostly trained on English only
-- Low accuracy for very short or ambiguous texts
-- Limited interactivity compared to full chatbot frameworks
-
----
-
-### 👨‍💻 7. My Role & Learning
-- **Design:** I designed and implemented the full chatbot interface.
-- **Development:** Integrated the transformer model into Streamlit.
-- **Learning:** Learned how to use NLP pipelines, model inference, and build user-friendly Streamlit UIs.
-
----
+**Key Features:**
+- Real-time emotion detection
+- Emotion-based chatbot responses
+- Simple and interactive Streamlit UI
 """)
 
-# --- Display Creator Image ---
+# --- Creator Image ---
 try:
     image = Image.open("junayed.jpeg")
     st.image(image, caption="Md. Junayed Bin Karim", width=150)
@@ -110,15 +91,31 @@ st.markdown("---")
 # --- User Input ---
 user_input = st.text_input("✉️ Enter your message:")
 
-# --- Detect & Respond to Emotion ---
+# --- Session State for History ---
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+# --- Sample Messages ---
+with st.expander("🧪 Try Sample Messages"):
+    col1, col2 = st.columns(2)
+    if col1.button("Try Joy"):
+        user_input = "I'm feeling so excited today!"
+    if col2.button("Try Sadness"):
+        user_input = "I feel very lonely and depressed."
+
+# --- Process Input and Respond ---
 if st.button("Send"):
     if not user_input.strip():
         st.warning("⚠️ Please enter a message!")
     else:
-        emotion, confidence = detect_emotion(user_input)
+        emotion, emotion_scores = detect_emotion(user_input)
+        confidence = emotion_scores.get(emotion, 0.0)
         confidence_percent = confidence * 100
 
-        # Emotion-based response
+        # Save to history
+        st.session_state.history.append((user_input, emotion))
+
+        # Predefined Responses
         responses = {
             "joy": "Glad to hear you're feeling happy! 😊",
             "anger": "I’m here to listen if something’s bothering you.",
@@ -128,10 +125,51 @@ if st.button("Send"):
             "neutral": "Thank you for sharing that with me."
         }
 
-        if confidence < 0.2:
-            response = "I'm not sure how you're feeling, but I'm here to chat."
-        else:
-            response = responses.get(emotion, responses["neutral"])
+        response = responses.get(emotion, responses["neutral"]) if confidence >= 0.2 else "I'm not sure how you're feeling, but I'm here to chat."
 
+        # Display
         st.markdown(f"### 🤔 Detected Emotion: `{emotion.capitalize()}` ({confidence_percent:.2f}%)")
         st.markdown(f"### 🤖 Chatbot: {response}")
+        show_emotion_chart(emotion_scores)
+
+# --- Conversation History ---
+with st.expander("🕓 Conversation History"):
+    for i, (msg, emo) in enumerate(st.session_state.history, 1):
+        st.markdown(f"**{i}.** _You:_ {msg}  →  _Detected:_ `{emo}`")
+
+# --- Download Report ---
+if st.button("📄 Download Emotion Report"):
+    report = "\n".join(
+        [f"{i+1}. Message: {msg} | Emotion: {emo}" for i, (msg, emo) in enumerate(st.session_state.history)]
+    )
+    st.download_button("Download as TXT", report, file_name=f"emotion_report_{datetime.date.today()}.txt")
+
+# --- Technical Details ---
+st.markdown("""
+### ⚙️ Technical Details
+
+- **Frontend:** Streamlit  
+- **Model Used:** `j-hartmann/emotion-english-distilroberta-base`  
+- **Library:** Transformers (HuggingFace), PIL, Matplotlib  
+- **Functionality:** Emotion detection using NLP + Emotion-based response generation  
+- **Runtime Environment:** Python 3.12  
+""")
+
+# --- App Screenshots (if available) ---
+st.markdown("### 🖼️ App Screenshots (Sample Output)")
+try:
+    st.image("sample_output1.png", caption="Detected: Joy", use_column_width=True)
+    st.image("sample_output2.png", caption="Detected: Sadness", use_column_width=True)
+except FileNotFoundError:
+    st.warning("Sample screenshots not found. Please add 'sample_output1.png' and 'sample_output2.png' to app directory.")
+
+# --- Conclusion and Future Plan ---
+st.markdown("""
+### 🔚 Conclusion & Future Plan
+
+This Emotion-Aware Chatbot demonstrates how deep learning can be used to build empathetic communication tools.  
+In future versions, we plan to:
+- Support multi-language emotion detection  
+- Integrate voice input and output  
+- Connect with mental health professionals for feedback  
+""")
