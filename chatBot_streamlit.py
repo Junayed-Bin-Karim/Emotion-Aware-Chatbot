@@ -54,7 +54,6 @@ def show_emotion_chart(emotions_dict):
 
     ax.bar3d(xpos, ypos, zpos, dx, dy, dz, color=colors, alpha=0.8)
 
-    # Set X axis labels with better positioning
     ax.set_xticks(xpos + dx / 2)
     ax.set_xticklabels(labels, fontsize=12, rotation=30, ha='right', rotation_mode='anchor')
 
@@ -62,11 +61,13 @@ def show_emotion_chart(emotions_dict):
     ax.set_zlabel('Confidence (%)', fontsize=12)
     ax.set_zlim(0, 100)
 
+    # লেবেল নিচে নামানোর জন্য
+    ax.tick_params(axis='x', pad=15)  # x-axis ticks নিচে নামানো
+
     ax.view_init(elev=25, azim=45)
 
     plt.tight_layout()
     st.pyplot(fig)
-
 
 
 
