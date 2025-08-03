@@ -2,6 +2,8 @@ import streamlit as st
 from transformers import pipeline
 from PIL import Image
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 needed for 3d projection
+import numpy as np  # <-- এখানে numpy ইমপোর্ট করো
 import datetime
 
 # --- Streamlit page configuration ---
