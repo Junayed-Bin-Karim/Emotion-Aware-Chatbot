@@ -47,23 +47,7 @@ def show_emotion_chart(emotions_dict):
 st.title(" Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
-# --- Project Description ---
-st.markdown("""
-### 📄 Project Description
 
-**Emotion-Aware Chatbot** is an intelligent conversational agent that can detect human emotions from text in real-time.  
-It uses a pre-trained transformer model to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral**.
-
-Based on the detected emotion, it responds empathetically to enhance user interaction. This chatbot has applications in:
-- Mental health support  
-- Emotion-aware customer service  
-- Human-computer interaction systems  
-
-**Key Features:**
-- Real-time emotion detection
-- Emotion-based chatbot responses
-- Simple and interactive Streamlit UI
-""")
 
 # --- Creator Image ---
 try:
@@ -78,12 +62,8 @@ st.markdown("""
 **Md. Junayed Bin Karim**  
 🎓 Computer Science & Engineering (CSE), Daffodil International University  
 
-🔗 Connect with me:  
-- GitHub: [Junayed-Bin-Karim](https://github.com/Junayed-Bin-Karim)  
-- LinkedIn: [Junayed Bin Karim](https://www.linkedin.com/in/junayed-bin-karim-47b755270/)  
 
-Passionate about AI, Machine Learning, and Software Development.  
-Building innovative projects to solve real-world problems.
+
 """)
 
 st.markdown("---")
