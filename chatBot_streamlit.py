@@ -158,6 +158,9 @@ st.markdown("""
 # --- App Screenshots (if available) ---
 ### 🔚 Conclusion & Future Plan
 
+st.markdown("""
+### 🔚 Conclusion & Future Plan
+
 This Emotion-Aware Chatbot demonstrates how deep learning can be used to build empathetic communication tools.  
 In future versions, we plan to:
 - Support multi-language emotion detection  
