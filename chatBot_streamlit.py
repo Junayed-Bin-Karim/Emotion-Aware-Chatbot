@@ -33,38 +33,30 @@ def detect_emotion(text):
     except Exception:
         return "neutral", {}
 
+import matplotlib.pyplot as plt
+import numpy as np
+import streamlit as st
+
 def show_emotion_chart(emotions_dict):
-    st.subheader("📊 Emotion Scores (3D Bar Chart)")
+    st.subheader("📊 Emotion Scores (2D Bar Chart)")
 
     labels = list(emotions_dict.keys())
     scores = [score * 100 for score in emotions_dict.values()]
 
-    fig = plt.figure(figsize=(10,6))
-    ax = fig.add_subplot(111, projection='3d')
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bars = ax.bar(labels, scores, color=plt.cm.viridis(np.linspace(0.3, 0.8, len(labels))))
 
-    xpos = np.arange(len(labels))
-    ypos = np.zeros(len(labels))
-    zpos = np.zeros(len(labels))
+    ax.set_ylim(0, 100)
+    ax.set_ylabel("Confidence (%)", fontsize=12)
+    ax.set_title("Emotion Confidence Scores", fontsize=14, weight='bold')
 
-    dx = np.ones(len(labels)) * 0.5
-    dy = np.ones(len(labels)) * 0.5
-    dz = scores
+    # লেবেলগুলো স্পষ্ট দেখানোর জন্য
+    plt.xticks(rotation=30, ha='right', fontsize=12)
 
-    colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(labels)))
-
-    ax.bar3d(xpos, ypos, zpos, dx, dy, dz, color=colors, alpha=0.8)
-
-    ax.set_xticks(xpos + dx / 2)
-    ax.set_xticklabels(labels, fontsize=12, rotation=30, ha='right', rotation_mode='anchor')
-
-    ax.set_yticks([])
-    ax.set_zlabel('Confidence (%)', fontsize=12)
-    ax.set_zlim(0, 100)
-
-    # লেবেল নিচে নামানোর জন্য
-    ax.tick_params(axis='x', pad=15)  # x-axis ticks নিচে নামানো
-
-    ax.view_init(elev=25, azim=45)
+    # প্রতিটি বার এর উপরে স্কোর দেখানো
+    for bar, score in zip(bars, scores):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2, height + 1, f'{score:.1f}%', ha='center', fontsize=11)
 
     plt.tight_layout()
     st.pyplot(fig)
