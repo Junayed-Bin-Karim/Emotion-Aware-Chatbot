@@ -33,27 +33,43 @@ def detect_emotion(text):
 
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 needed for 3d projection
+import numpy as np
+import streamlit as st
 
 def show_emotion_chart(emotions_dict):
-    st.subheader("📊 Emotion Scores (3D-like Pie Chart)")
+    st.subheader("📊 Emotion Scores (3D Bar Chart)")
 
     labels = list(emotions_dict.keys())
     scores = [score * 100 for score in emotions_dict.values()]
 
-    explode = [0.05] * len(scores)  # সব সেগমেন্ট একটু আলাদা থাকবে
+    fig = plt.figure(figsize=(8,6))
+    ax = fig.add_subplot(111, projection='3d')
 
-    fig, ax = plt.subplots(figsize=(6,6), subplot_kw=dict(aspect="equal"))
+    xpos = np.arange(len(labels))
+    ypos = np.zeros(len(labels))  # Y axis zero for simplicity
+    zpos = np.zeros(len(labels))
 
-    wedges, texts, autotexts = ax.pie(
-        scores,
-        explode=explode,
-        labels=labels,
-        autopct='%1.1f%%',
-        shadow=True,              # ছায়া দেবে, 3D ইফেক্টের মতো দেখায়
-        startangle=140,
-        colors=plt.cm.Pastel1.colors,
-        wedgeprops=dict(width=0.4, edgecolor='w')  # ডোনাট স্টাইলের পাই চার্ট
-    )
+    dx = np.ones(len(labels)) * 0.6
+    dy = np.ones(len(labels)) * 0.6
+    dz = scores
+
+    colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(labels)))
+
+    ax.bar3d(xpos, ypos, zpos, dx, dy, dz, color=colors, alpha=0.8)
+
+    ax.set_xticks(xpos + dx / 2)
+    ax.set_xticklabels(labels, fontsize=12, rotation=30, ha='right')
+    ax.set_ylabel('')  # Hide y label
+    ax.set_yticks([])
+    ax.set_zlabel('Confidence (%)', fontsize=12)
+    ax.set_zlim(0, 100)
+
+    ax.view_init(elev=25, azim=45)  # Angle the 3d view
+
+    plt.tight_layout()
+    st.pyplot(fig)
+
 
     # Text style adjust
     plt.setp(autotexts, size=12, weight="bold", color="white")
