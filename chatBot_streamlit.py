@@ -2,26 +2,14 @@ import streamlit as st
 from transformers import pipeline
 from PIL import Image
 
-# --- Project Description ---
-"""
-Project: Emotion-Aware Chatbot
+# --- Streamlit page configuration: অবশ্যই প্রথমেই থাকতে হবে ---
+st.set_page_config(
+    page_title="Emotion-Aware Chatbot",
+    page_icon="🤖",
+    layout="centered"
+)
 
-This chatbot detects and understands human emotions from user text input using
-a transformer-based pre-trained model (DistilRoBERTa). It responds empathetically
-according to the detected emotion, enhancing user experience in conversational AI.
-
-Applications: Mental health support, customer service, emotion-sensitive chatbots.
-
-Key Features:
-- Real-time emotion classification
-- Emotion-aware responses
-- Simple and interactive UI built with Streamlit
-"""
-
-# --- Streamlit page configuration ---
-st.set_page_config(page_title="Emotion-Aware Chatbot", page_icon="🤖", layout="centered")
-
-# --- Load the emotion detection model with caching ---
+# --- Emotion detection model load with cache ---
 @st.cache_resource
 def load_model():
     return pipeline(
@@ -42,57 +30,76 @@ def detect_emotion(text):
     except Exception:
         return "neutral", 0.0
 
-# --- UI: Title and Instructions ---
+# --- Title and Intro ---
 st.title("🤖 Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
-# --- Display creator image ---
+# --- Project Description (shown in UI) ---
+st.markdown("""
+### 📄 Project Description
+
+**Emotion-Aware Chatbot** is an intelligent conversational agent that can detect human emotions from text in real-time.  
+It uses a pre-trained transformer model to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral**.
+
+Based on the detected emotion, it responds empathetically to enhance user interaction. This chatbot has applications in:
+- 💬 Mental health support  
+- 🛎️ Emotion-aware customer service  
+- 🤖 Human-computer interaction systems  
+
+**Key Features:**
+- ✅ Real-time emotion detection
+- ✅ Emotion-based chatbot responses
+- ✅ Simple and interactive Streamlit UI
+""")
+
+# --- Display Creator Image ---
 try:
     image = Image.open("junayed.jpeg")
     st.image(image, caption="Md. Junayed Bin Karim", width=150)
 except FileNotFoundError:
-    st.warning("Creator image not found.")
+    st.warning("Creator image not found. Please add 'junayed.jpeg' to the app directory.")
 
-# --- Creator info ---
-st.markdown(
-    """
-    ### 👤 About the Creator  
-    **Name:** Md. Junayed Bin Karim  
-    **University:** Daffodil International University  
-    **Department:** Computer Science and Engineering (CSE)  
-    **GitHub:** [github.com/Junayed-Bin-Karim](https://github.com/Junayed-Bin-Karim)  
-    **LinkedIn:** [linkedin.com/in/junayed-bin-karim-47b755270](https://www.linkedin.com/in/junayed-bin-karim-47b755270/)  
-    """
-)
+# --- Creator Info ---
+st.markdown("""
+### 👤 Creator Profile  
+**Md. Junayed Bin Karim**  
+🎓 Computer Science & Engineering (CSE), Daffodil International University  
+
+🔗 Connect with me:  
+- GitHub: [Junayed-Bin-Karim](https://github.com/Junayed-Bin-Karim)  
+- LinkedIn: [Junayed Bin Karim](https://www.linkedin.com/in/junayed-bin-karim-47b755270/)  
+
+💡 Passionate about AI, Machine Learning, and Software Development.  
+🚀 Building innovative projects to solve real-world problems.
+""")
 
 st.markdown("---")
 
-# --- User input ---
+# --- User input box ---
 user_input = st.text_input("✉️ Enter your message:")
 
-# --- Button and response ---
+# --- Button & response section ---
 if st.button("Send"):
-    if user_input.strip() == "":
-        st.warning("Please enter a message!")
+    if not user_input.strip():
+        st.warning("⚠️ Please enter a message!")
     else:
         emotion, confidence = detect_emotion(user_input)
-        confidence_percent = f"{confidence*100:.2f}%"
+        confidence_percent = confidence * 100
+
+        # Predefined responses
+        responses = {
+            "joy": "Glad to hear you're feeling happy! 😊",
+            "anger": "I’m here to listen if something’s bothering you.",
+            "sadness": "I'm sorry you're feeling sad. I'm here for you.",
+            "fear": "It sounds like something worries you. Feel free to talk about it.",
+            "surprise": "Wow! That sounds surprising!",
+            "neutral": "Thank you for sharing that with me."
+        }
 
         if confidence < 0.2:
             response = "I'm not sure how you're feeling, but I'm here to chat."
         else:
-            if emotion == "joy":
-                response = "Glad to hear you're feeling happy! 😊"
-            elif emotion == "anger":
-                response = "I’m here to listen if something’s bothering you."
-            elif emotion == "sadness":
-                response = "I'm sorry you're feeling sad. I'm here for you."
-            elif emotion == "fear":
-                response = "It sounds like something worries you. Feel free to talk about it."
-            elif emotion == "surprise":
-                response = "Wow! That sounds surprising!"
-            else:
-                response = "Thank you for sharing that with me."
+            response = responses.get(emotion, responses["neutral"])
 
-        st.markdown(f"**🤔 Detected Emotion:** `{emotion}` ({confidence_percent} confidence)")
-        st.markdown(f"**🤖 Chatbot:** {response}")
+        st.markdown(f"### 🤔 Detected Emotion: `{emotion.capitalize()}` ({confidence_percent:.2f}%)")
+        st.markdown(f"### 🤖 Chatbot: {response}")
