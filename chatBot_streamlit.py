@@ -31,17 +31,26 @@ def detect_emotion(text):
     except Exception:
         return "neutral", {}
 
-# --- Show Emotion Chart ---
+
+
+import matplotlib.pyplot as plt
+
 def show_emotion_chart(emotions_dict):
-    st.subheader("📊 Emotion Scores")
+    st.subheader("Emotion Scores (Pie Chart)")
     labels = list(emotions_dict.keys())
-    scores = [round(score * 100, 2) for score in emotions_dict.values()]
+    scores = [score * 100 for score in emotions_dict.values()]
 
     fig, ax = plt.subplots()
-    ax.bar(labels, scores, color='skyblue')
-    ax.set_ylabel("Confidence (%)")
-    ax.set_ylim([0, 100])
+    ax.pie(
+        scores,
+        labels=labels,
+        autopct='%1.1f%%',
+        startangle=140,
+        colors=plt.cm.Pastel1.colors
+    )
+    ax.axis('equal')  # Equal aspect ratio ensures pie is circular.
     st.pyplot(fig)
+
 
 # --- Title and Description ---
 st.title(" Emotion-Aware Chatbot")
