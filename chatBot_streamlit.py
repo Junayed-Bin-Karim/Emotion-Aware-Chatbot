@@ -33,7 +33,6 @@ def detect_emotion(text):
     except Exception:
         return "neutral", {}
 
-# --- Show 3D Bar Emotion Chart ---
 def show_emotion_chart(emotions_dict):
     st.subheader("📊 Emotion Scores (3D Bar Chart)")
 
@@ -47,16 +46,18 @@ def show_emotion_chart(emotions_dict):
     ypos = np.zeros(len(labels))
     zpos = np.zeros(len(labels))
 
-    dx = np.ones(len(labels)) * 0.4
-    dy = np.ones(len(labels)) * 0.4
+    dx = np.ones(len(labels)) * 0.5
+    dy = np.ones(len(labels)) * 0.5
     dz = scores
 
     colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(labels)))
 
     ax.bar3d(xpos, ypos, zpos, dx, dy, dz, color=colors, alpha=0.8)
 
+    # Set X axis labels with better positioning
     ax.set_xticks(xpos + dx / 2)
-    ax.set_xticklabels(labels, fontsize=10, rotation=45, ha='right')
+    ax.set_xticklabels(labels, fontsize=12, rotation=30, ha='right', rotation_mode='anchor')
+
     ax.set_yticks([])
     ax.set_zlabel('Confidence (%)', fontsize=12)
     ax.set_zlim(0, 100)
