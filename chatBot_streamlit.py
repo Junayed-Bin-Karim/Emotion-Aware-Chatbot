@@ -2,13 +2,10 @@ import streamlit as st
 from transformers import pipeline
 from PIL import Image
 
-# --- Streamlit page configuration: অবশ্যই প্রথমেই থাকতে হবে ---
-st.set_page_config(
-    page_title="Emotion-Aware Chatbot",
-    layout="centered"
-)
+# --- Streamlit Page Configuration ---
+st.set_page_config(page_title="Emotion-Aware Chatbot", layout="centered")
 
-# --- Emotion detection model load with cache ---
+# --- Load Emotion Detection Model ---
 @st.cache_resource
 def load_model():
     return pipeline(
@@ -19,7 +16,7 @@ def load_model():
 
 emotion_pipeline = load_model()
 
-# --- Function to detect emotion ---
+# --- Detect Emotion Function ---
 def detect_emotion(text):
     try:
         results = emotion_pipeline(text)
@@ -29,26 +26,62 @@ def detect_emotion(text):
     except Exception:
         return "neutral", 0.0
 
-# --- Title and Intro ---
+# --- Title & Intro ---
 st.title("🤖 Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
-# --- Project Description (shown in UI) ---
+# --- Project Description ---
 st.markdown("""
-### 📄 Project Description
+### 📄 1. Project Name & Description
+**Emotion-Aware Chatbot** is an AI-powered chatbot that can understand human emotions from text using Natural Language Processing (NLP).  
+It can detect **joy, anger, sadness, fear, surprise**, and **neutral** emotions in real-time and reply accordingly to create an empathetic interaction.
 
-**Emotion-Aware Chatbot** is an intelligent conversational agent that can detect human emotions from text in real-time.  
-It uses a pre-trained transformer model to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral**.
+---
 
-Based on the detected emotion, it responds empathetically to enhance user interaction. This chatbot has applications in:
--  Mental health support  
-- Emotion-aware customer service  
--  Human-computer interaction systems  
+### 🎯 2. Objective
+- Enhance human-computer interaction
+- Support mental well-being through emotion-aware responses
+- Demonstrate how NLP and AI can be used in real-world applications
 
-**Key Features:**
-- Real-time emotion detection
-- Emotion-based chatbot responses
-- Simple and interactive Streamlit UI
+---
+
+### 🛠️ 3. Technologies Used
+- **Python 3**
+- **Streamlit** – for building the interactive web interface
+- **Transformers (HuggingFace)** – pre-trained emotion detection model
+- **Pillow** – for image rendering
+
+---
+
+### ⚙️ 4. How It Works
+1. User types a message.
+2. The pre-trained transformer model analyzes the text.
+3. The chatbot detects the most likely emotion with a confidence score.
+4. It replies based on the detected emotion.
+
+---
+
+### 🚀 5. Future Improvements
+- Add multilingual emotion detection (e.g., বাংলা)
+- Store chat history and emotions over time
+- Integrate with voice recognition
+- Improve emotion response customization
+
+---
+
+### ⚠️ 6. Challenges Faced
+- Emotion models mostly trained on English only
+- Low accuracy for very short or ambiguous texts
+- Limited interactivity compared to full chatbot frameworks
+
+---
+
+### 👨‍💻 7. My Role & Learning
+- **Design:** I designed and implemented the full chatbot interface.
+- **Development:** Integrated the transformer model into Streamlit.
+- **Learning:** Learned how to use NLP pipelines, model inference, and build user-friendly Streamlit UIs.
+
+---
 """)
 
 # --- Display Creator Image ---
@@ -68,16 +101,16 @@ st.markdown("""
 - GitHub: [Junayed-Bin-Karim](https://github.com/Junayed-Bin-Karim)  
 - LinkedIn: [Junayed Bin Karim](https://www.linkedin.com/in/junayed-bin-karim-47b755270/)  
 
- Passionate about AI, Machine Learning, and Software Development.  
- Building innovative projects to solve real-world problems.
+Passionate about AI, Machine Learning, and Software Development.  
+Building innovative projects to solve real-world problems.
 """)
 
 st.markdown("---")
 
-# --- User input box ---
+# --- User Input ---
 user_input = st.text_input("✉️ Enter your message:")
 
-# --- Button & response section ---
+# --- Detect & Respond to Emotion ---
 if st.button("Send"):
     if not user_input.strip():
         st.warning("⚠️ Please enter a message!")
@@ -85,7 +118,7 @@ if st.button("Send"):
         emotion, confidence = detect_emotion(user_input)
         confidence_percent = confidence * 100
 
-        # Predefined responses
+        # Emotion-based response
         responses = {
             "joy": "Glad to hear you're feeling happy! 😊",
             "anger": "I’m here to listen if something’s bothering you.",
