@@ -38,7 +38,7 @@ import numpy as np
 import streamlit as st
 
 def show_emotion_chart(emotions_dict):
-    st.subheader("📊 Emotion Scores (2D Bar Chart)")
+    st.subheader(" Emotion Scores (2D Bar Chart)")
 
     labels = list(emotions_dict.keys())
     scores = [score * 100 for score in emotions_dict.values()]
