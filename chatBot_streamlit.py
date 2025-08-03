@@ -144,26 +144,3 @@ if st.button("📄 Download Emotion Report"):
     )
     st.download_button("Download as TXT", report, file_name=f"emotion_report_{datetime.date.today()}.txt")
 
-# --- Technical Details ---
-st.markdown("""
-### ⚙️ Technical Details
-
-- **Frontend:** Streamlit  
-- **Model Used:** `j-hartmann/emotion-english-distilroberta-base`  
-- **Library:** Transformers (HuggingFace), PIL, Matplotlib  
-- **Functionality:** Emotion detection using NLP + Emotion-based response generation  
-- **Runtime Environment:** Python 3.12  
-""")
-
-# --- App Screenshots (if available) ---
-### 🔚 Conclusion & Future Plan
-
-st.markdown("""
-### 🔚 Conclusion & Future Plan
-
-This Emotion-Aware Chatbot demonstrates how deep learning can be used to build empathetic communication tools.  
-In future versions, we plan to:
-- Support multi-language emotion detection  
-- Integrate voice input and output  
-- Connect with mental health professionals for feedback  
-""")
