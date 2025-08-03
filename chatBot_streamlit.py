@@ -1,16 +1,38 @@
 import streamlit as st
 from transformers import pipeline
+from PIL import Image
 
-# set_page_config() অবশ্যই প্রথমে আসবে
+# --- Project Description ---
+"""
+Project: Emotion-Aware Chatbot
+
+This chatbot detects and understands human emotions from user text input using
+a transformer-based pre-trained model (DistilRoBERTa). It responds empathetically
+according to the detected emotion, enhancing user experience in conversational AI.
+
+Applications: Mental health support, customer service, emotion-sensitive chatbots.
+
+Key Features:
+- Real-time emotion classification
+- Emotion-aware responses
+- Simple and interactive UI built with Streamlit
+"""
+
+# --- Streamlit page configuration ---
 st.set_page_config(page_title="Emotion-Aware Chatbot", page_icon="🤖", layout="centered")
 
-# মডেল লোড করার ফাংশন
+# --- Load the emotion detection model with caching ---
 @st.cache_resource
 def load_model():
-    return pipeline("text-classification", model="j-hartmann/emotion-english-distilroberta-base", return_all_scores=True)
+    return pipeline(
+        "text-classification",
+        model="j-hartmann/emotion-english-distilroberta-base",
+        return_all_scores=True
+    )
 
 emotion_pipeline = load_model()
 
+# --- Function to detect emotion ---
 def detect_emotion(text):
     try:
         results = emotion_pipeline(text)
@@ -20,17 +42,18 @@ def detect_emotion(text):
     except Exception:
         return "neutral", 0.0
 
-# Title
-st.title("Emotion-Aware Chatbot")
+# --- UI: Title and Instructions ---
+st.title("🤖 Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
-from PIL import Image
+# --- Display creator image ---
+try:
+    image = Image.open("junayed.jpeg")
+    st.image(image, caption="Md. Junayed Bin Karim", width=150)
+except FileNotFoundError:
+    st.warning("Creator image not found.")
 
-# Display your photo
-image = Image.open("junayed.jpeg")  # Make sure the image file is in the same directory
-st.image(image, caption="Md. Junayed Bin Karim", width=150)
-
-# Updated Creator Info
+# --- Creator info ---
 st.markdown(
     """
     ### 👤 About the Creator  
@@ -44,10 +67,10 @@ st.markdown(
 
 st.markdown("---")
 
-# ইউজারের ইনপুট নেওয়া
+# --- User input ---
 user_input = st.text_input("✉️ Enter your message:")
 
-# বাটনে ক্লিক করলে রেসপন্স দেখানো
+# --- Button and response ---
 if st.button("Send"):
     if user_input.strip() == "":
         st.warning("Please enter a message!")
