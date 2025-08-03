@@ -24,15 +24,24 @@ def detect_emotion(text):
 st.title("🤖 Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
-# Creator Info - তোমার নাম এবং পরিচয় দেখানোর অংশ
-st.markdown("---")
+from PIL import Image
+
+# Display your photo
+image = Image.open("junayed.jpg")  # Make sure the image file is in the same directory
+st.image(image, caption="Md. Junayed Bin Karim", width=150)
+
+# Updated Creator Info
 st.markdown(
     """
-    **Created by:** Md. Junayed Bin Karim  
-    **Daffodil International University**  
-    **CSE Student**  
+    ### 👤 About the Creator  
+    **Name:** Md. Junayed Bin Karim  
+    **University:** Daffodil International University  
+    **Department:** Computer Science and Engineering (CSE)  
+    **GitHub:** [github.com/Junayed-Bin-Karim](https://github.com/Junayed-Bin-Karim)  
+    **LinkedIn:** [linkedin.com/in/junayed-bin-karim-47b755270](https://www.linkedin.com/in/junayed-bin-karim-47b755270/)  
     """
 )
+
 st.markdown("---")
 
 # ইউজারের ইনপুট নেওয়া
