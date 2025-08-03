@@ -77,6 +77,8 @@ def show_emotion_chart(emotions_dict):
 
     ax.set_title("Emotion Confidence Scores", fontsize=14, weight='bold')
     st.pyplot(fig)
+ax.set_xticklabels(labels, fontsize=12, rotation=45, ha='right')
+ax.set_xticks(xpos + dx / 2)
 
 
 
