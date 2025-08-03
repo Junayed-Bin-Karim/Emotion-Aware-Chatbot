@@ -1,14 +1,90 @@
-# ChatBot
-The program is a simple chatbot that detects emotions in user input using a pre-trained machine learning model. It generates responses based on the detected emotion, making the interaction feel more empathetic and engaging.
+# Emotion-Aware Chatbot
 
-### Transformers library
-This library is used to load pre-trained models for various natural language processing tasks, including emotion detection. The transformers library offers a convenient way to load such models using a "pipeline," which is an easy-to-use wrapper that applies the model to perform specific tasks, such as emotion detection, sentiment analysis, and text classification.
+An advanced conversational AI application that detects user emotions from text input in real-time and responds empathetically. Built using Streamlit and Hugging Face Transformers, this chatbot leverages state-of-the-art NLP techniques to enhance human-computer interactions.
 
-### pipeline function
-Here, the pipeline function initializes an emotion detection model. The specific model used (j-hartmann/emotion-english-distilroberta-base) is pre-trained for emotion classification tasks. The return_all_scores=True parameter allows the pipeline to return scores for all possible emotions, not just the highest one.
+---
 
-### model information
-This model is based on DistilRoBERTa, a smaller and faster version of the RoBERTa model (Robustly Optimized BERT Pretraining Approach). DistilRoBERTa is a transformer-based model that uses self-attention mechanisms to analyze relationships between words in a sentence, which allows it to capture complex language patterns and nuances that are associated with different emotions.
+## Overview
 
-Output:
-![output](https://github.com/user-attachments/assets/27d8d844-be84-4ee0-8ead-114aab3eceea)
+The Emotion-Aware Chatbot utilizes a pretrained transformer model (`j-hartmann/emotion-english-distilroberta-base`) to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral** from user messages. It then generates contextually appropriate and empathetic responses, improving user experience in applications like mental health support, customer service, and emotional analytics.
+
+---
+
+## Features
+
+- **Real-time emotion recognition:** Analyze input text instantly to determine emotional state.  
+- **Dynamic empathetic responses:** Reply with context-aware messages tailored to detected emotions.  
+- **Visual emotion confidence:** Display confidence scores using interactive bar charts powered by Matplotlib.  
+- **Conversation history:** Keep track of user inputs and detected emotions for review.  
+- **Downloadable reports:** Export conversation history with emotion labels as a TXT file.  
+- **User-friendly UI:** Clean and intuitive interface built with Streamlit.
+
+---
+
+## Technology Stack
+
+| Component            | Technology/Library                           |
+|----------------------|----------------------------------------------|
+| Frontend             | Streamlit                                   |
+| NLP Model            | Hugging Face Transformers (`distilroberta`) |
+| Programming Language | Python 3.12                                |
+| Visualization        | Matplotlib                                  |
+| Image Handling       | Pillow (PIL)                                |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.12 or later  
+- pip package manager
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Junayed-Bin-Karim/emotion-aware-chatbot.git
+   cd emotion-aware-chatbot
+2.(Optional) Create and activate a virtual environment:
+
+python -m venv venv
+# Linux/macOS
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
+Usage
+Enter your message in the input box.
+
+Click Send to analyze the emotion.
+
+View the detected emotion, chatbot response, and emotion confidence scores.
+
+Use the Try Sample Messages expander to test with predefined inputs.
+
+Download the conversation report using the Download Emotion Report button.
+
+Screenshots
+(Add relevant screenshots here to showcase UI and features)
+
+Author
+Md. Junayed Bin Karim
+Computer Science & Engineering (CSE)
+Daffodil International University
+
+GitHub: Junayed-Bin-Karim
+
+LinkedIn: Junayed Bin Karim
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+Future Enhancements
+Extend support for multilingual emotion detection.
+
+Integrate speech-to-text and text-to-speech capabilities for voice interaction.
+
+Collaborate with mental health experts to validate responses and improve utility.
+
+Develop mobile-friendly interface and chatbot deployment options.
+
