@@ -98,7 +98,6 @@ if "history" not in st.session_state:
 # --- Sample Messages ---
 import streamlit as st
 
-st.title("🎭 Emotion-Aware Chatbot")
 
 user_input = ""
 
