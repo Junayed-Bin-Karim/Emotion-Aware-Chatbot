@@ -21,13 +21,13 @@ def detect_emotion(text):
         return "neutral", 0.0
 
 # Title
-st.title("🤖 Emotion-Aware Chatbot")
+st.title("Emotion-Aware Chatbot")
 st.write("I can understand your emotions and chat with you. Please type your message below.")
 
 from PIL import Image
 
 # Display your photo
-image = Image.open("junayed.jpg")  # Make sure the image file is in the same directory
+image = Image.open("junayed.jpeg")  # Make sure the image file is in the same directory
 st.image(image, caption="Md. Junayed Bin Karim", width=150)
 
 # Updated Creator Info
