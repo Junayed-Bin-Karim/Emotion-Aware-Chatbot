@@ -49,12 +49,7 @@ st.write("I can understand your emotions and chat with you. Please type your mes
 
 
 
-# --- Creator Image ---
-try:
-    image = Image.open("junayed.jpeg")
-    st.image(image, caption="Md. Junayed Bin Karim", width=150)
-except FileNotFoundError:
-    st.warning("Creator image not found. Please add 'junayed.jpeg' to the app directory.")
+
 
 # --- Creator Info ---
 st.markdown("""
