@@ -49,7 +49,7 @@ st.write("I can understand your emotions and chat with you. Please type your mes
 
 # --- Project Description ---
 st.markdown("""
-###  Project Description
+### 📄 Project Description
 
 **Emotion-Aware Chatbot** is an intelligent conversational agent that can detect human emotions from text in real-time.  
 It uses a pre-trained transformer model to classify emotions such as **joy, anger, sadness, fear, surprise**, and **neutral**.
@@ -96,28 +96,12 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # --- Sample Messages ---
-import streamlit as st
-
-
-user_input = ""
-
-with st.expander("🧪 Try Sample Messages"):
+with st.expander(" Try Sample Messages"):
     col1, col2 = st.columns(2)
     if col1.button("Try Joy"):
         user_input = "I'm feeling so excited today!"
     if col2.button("Try Sadness"):
         user_input = "I feel very lonely and depressed."
-
-# 👉 Button click করলে নিচে সেটা দেখাবে ও process করবে
-if user_input:
-    st.success(f"📝 You selected: {user_input}")
-    # এখানেই তুমি emotion detect logic বসাতে পারো
-    # যেমন:
-    if "excited" in user_input or "happy" in user_input:
-        st.image("sample_output1.png", caption="Detected: Joy", use_column_width=True)
-    elif "lonely" in user_input or "depressed" in user_input:
-        st.image("sample_output2.png", caption="Detected: Sadness", use_column_width=True)
-
 
 # --- Process Input and Respond ---
 if st.button("Send"):
@@ -144,8 +128,8 @@ if st.button("Send"):
         response = responses.get(emotion, responses["neutral"]) if confidence >= 0.2 else "I'm not sure how you're feeling, but I'm here to chat."
 
         # Display
-        st.markdown(f"### 🤔 Detected Emotion: `{emotion.capitalize()}` ({confidence_percent:.2f}%)")
-        st.markdown(f"### 🤖 Chatbot: {response}")
+        st.markdown(f"###  Detected Emotion: `{emotion.capitalize()}` ({confidence_percent:.2f}%)")
+        st.markdown(f"###  Chatbot: {response}")
         show_emotion_chart(emotion_scores)
 
 # --- Conversation History ---
@@ -172,15 +156,6 @@ st.markdown("""
 """)
 
 # --- App Screenshots (if available) ---
-st.markdown("### 🖼️ App Screenshots (Sample Output)")
-try:
-    st.image("sample_output1.png", caption="Detected: Joy", use_column_width=True)
-    st.image("sample_output2.png", caption="Detected: Sadness", use_column_width=True)
-except FileNotFoundError:
-    st.warning("Sample screenshots not found. Please add 'sample_output1.png' and 'sample_output2.png' to app directory.")
-
-# --- Conclusion and Future Plan ---
-st.markdown("""
 ### 🔚 Conclusion & Future Plan
 
 This Emotion-Aware Chatbot demonstrates how deep learning can be used to build empathetic communication tools.  
